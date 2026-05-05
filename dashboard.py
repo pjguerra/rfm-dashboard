@@ -257,7 +257,9 @@ table_cols = ["partner_name","am_name","segment","tier","tier_prev",
 if selected_am != "Todos":
     table_cols = [c for c in table_cols if c != "am_name"]
 
-display = (view[table_cols]
+display = (view[table_cols + ["tier_rank"]]
+           .sort_values(["tier_rank", "M_periodo"], ascending=[False, False])
+           .drop(columns=["tier_rank"])
            .rename(columns={
                "partner_name": "Cliente",
                "am_name":      "AM",
@@ -268,8 +270,7 @@ display = (view[table_cols]
                "R_periodo":    "Recencia (días)",
                "F_periodo":    "Órdenes",
                "M_periodo":    "Volumen GTQ",
-           })
-           .sort_values("Volumen GTQ", ascending=False))
+           }))
 
 display["Volumen GTQ"] = display["Volumen GTQ"].apply(lambda x: f"Q{x:,.0f}")
 
