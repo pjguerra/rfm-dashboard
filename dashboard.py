@@ -117,16 +117,7 @@ with st.sidebar:
 
     active_ams = sorted(df[df["is_active_am"]]["am_name"].dropna().unique().tolist())
     ams = ["Todos"] + active_ams
-    am_col, am_clear = st.columns([4, 1])
-    with am_col:
-        selected_am = st.selectbox("Account Manager", ams,
-                                   index=ams.index(st.session_state.get("am", "Todos")))
-    with am_clear:
-        st.write("")
-        if st.button("✕", key="clear_am", help="Limpiar"):
-            st.session_state["am"] = "Todos"
-            st.rerun()
-    st.session_state["am"] = selected_am
+    selected_am = st.selectbox("Account Manager", ams)
 
     segs = ["Todos"] + sorted(df["segment"].unique().tolist())
     selected_seg = st.selectbox("Segmento", segs)
