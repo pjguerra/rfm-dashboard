@@ -1,0 +1,6 @@
+streamlit==1.32.0
+pandas==2.2.3
+plotly==5.22.0
+google-cloud-bigquery==3.34.0
+db-dtypes==1.4.2
+pyarrow==20.0.0
