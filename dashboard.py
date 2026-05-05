@@ -116,11 +116,14 @@ with st.sidebar:
     st.title("Filtros")
 
     active_ams = sorted(df[df["is_active_am"]]["am_name"].dropna().unique().tolist())
-    ams = ["Todos"] + active_ams
-    selected_am = st.selectbox("Account Manager", ams)
+    am_sel = st.multiselect("Account Manager", active_ams,
+                            max_selections=1, placeholder="Todos los AMs")
+    selected_am = am_sel[0] if am_sel else "Todos"
 
-    segs = ["Todos"] + sorted(df["segment"].unique().tolist())
-    selected_seg = st.selectbox("Segmento", segs)
+    segs = sorted(df["segment"].unique().tolist())
+    seg_sel = st.multiselect("Segmento", segs,
+                             max_selections=1, placeholder="Todos los segmentos")
+    selected_seg = seg_sel[0] if seg_sel else "Todos"
 
     all_tiers = [t for t in TIER_ORDER if t in df["tier"].unique()]
     selected_tiers = st.multiselect("Tier", options=all_tiers, default=all_tiers)
