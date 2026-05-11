@@ -121,9 +121,7 @@ with st.sidebar:
     selected_am = am_sel[0] if am_sel else "Todos"
 
     segs = sorted(df["segment"].unique().tolist())
-    seg_sel = st.multiselect("Segmento", segs,
-                             max_selections=1, placeholder="Todos los segmentos")
-    selected_seg = seg_sel[0] if seg_sel else "Todos"
+    selected_segs = st.multiselect("Segmento", segs, placeholder="Todos los segmentos")
 
     all_tiers = [t for t in TIER_ORDER if t in df["tier"].unique()]
     selected_tiers = st.multiselect("Tier", options=all_tiers, default=all_tiers)
@@ -171,15 +169,15 @@ df_view["R_periodo"] = df_view["R_periodo"].fillna(
 view = df_view.copy()
 if selected_am != "Todos":
     view = view[view["am_name"] == selected_am]
-if selected_seg != "Todos":
-    view = view[view["segment"] == selected_seg]
+if selected_segs:
+    view = view[view["segment"].isin(selected_segs)]
 if selected_tiers:
     view = view[view["tier"].isin(selected_tiers)]
 
 # ── TÍTULO ────────────────────────────────────────────────────────────────────
 title_parts = []
-if selected_am != "Todos":   title_parts.append(selected_am)
-if selected_seg != "Todos":  title_parts.append(selected_seg)
+if selected_am != "Todos":  title_parts.append(selected_am)
+if selected_segs:           title_parts.append(" · ".join(selected_segs))
 st.title("Dashboard RFM — " + (" · ".join(title_parts) if title_parts else "Todos los clientes"))
 
 # ── KPIs ──────────────────────────────────────────────────────────────────────
